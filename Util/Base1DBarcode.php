@@ -288,7 +288,7 @@ class Base1DBarcode
         if (is_null($filename)){
             $filename = $type.'_'.$code;
         }
-
+        
         $this->setBarcode($code, $type);
         $bar = null;
 
@@ -1010,7 +1010,7 @@ class Base1DBarcode
         $k = 0;
         for ($i = 0; $i < $len; ++$i) {
             $w += 1;
-            if (($i == ($len - 1)) || (($i < ($len - 1)) && ($seq[$i] != $seq[($i + 1)]))) {
+            if (($i == ($len - 1)) || (($i < ($len - 1)) && ($seq[$i] != $seq[($i+1)]))) {
                 if ($seq[$i] == '1') {
                     $t = true; // bar
                 } else {
@@ -1066,7 +1066,7 @@ class Base1DBarcode
         $clen = strlen($code);
         for ($i = 0; $i < $clen; $i = ($i + 2)) {
             $charBar = $code[$i];
-            $charSpace = $code[$i + 1];
+            $charSpace = $code[$i+1];
             if ((!isset($chr[$charBar])) || (!isset($chr[$charSpace]))) {
                 // invalid character
                 return false;
@@ -1274,7 +1274,7 @@ class Base1DBarcode
                     return false;
                 }
                 for ($i = 0; $i < $len; $i+=2) {
-                    $chrnum = $code[$i] . $code[$i + 1];
+                    $chrnum = $code[$i].$code[$i+1];
                     if (preg_match('/([0-9]{2})/', $chrnum) > 0) {
                         $codeData[] = intval($chrnum);
                     } else {
@@ -1390,7 +1390,7 @@ class Base1DBarcode
                             $codeData[] = 99;
                         }
                         for ($i = 0; $i < $seq[2]; $i+=2) {
-                            $chrnum = $seq[1][$i] . $seq[1][$i + 1];
+                            $chrnum = $seq[1][$i].$seq[1][$i+1];
                             $codeData[] = intval($chrnum);
                         }
                         break;
@@ -1512,7 +1512,7 @@ class Base1DBarcode
         if ($codeLen == $dataLen) {
             // add check digit
             $code .= $r;
-        } elseif ($r !== intval($code[$dataLen])) {
+        } elseif ($r !== intval($code{$dataLen})) {
             // wrong checkdigit
             return false;
         }
@@ -1649,7 +1649,7 @@ class Base1DBarcode
         $w = 0;
         for ($i = 0; $i < $clen; ++$i) {
             $w += 1;
-            if (($i == ($clen - 1)) || (($i < ($clen - 1)) && ($seq[$i] != $seq[($i + 1)]))) {
+            if (($i == ($clen - 1)) || (($i < ($clen - 1)) && ($seq[$i] != $seq[($i+1)]))) {
                 if ($seq[$i] == '1') {
                     $t = true; // bar
                 } else {
