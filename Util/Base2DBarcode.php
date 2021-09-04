@@ -202,7 +202,7 @@ class Base2DBarcode
      *
      * @return bool
      */
-    public function getBarcodePNG($code, $type, $w=3, $h=3, $color=array(0, 0, 0))
+    public function getBarcodePNG($code, $type, $w=3, $h=3, $color=array(0, 0, 0), $output=true)
     {
         //set barcode code and type
         $this->setBarcode($code, $type);
@@ -240,15 +240,20 @@ class Base2DBarcode
                     if ($imagick) {
                         $bar = new \imagickdraw();
                         $bar->setfillcolor($fgcol);
-                        $bar->rectangle($x, $y, ($x + $w), ($y + $h));
+                        $bar->rectangle($x, $y, ($x + $w - 1), ($y + $h - 1));
                     } else {
-                        imagefilledrectangle($png, $x, $y, ($x + $w), ($y + $h), $fgcol);
+                        imagefilledrectangle($png, $x, $y, ($x + $w - 1), ($y + $h - 1), $fgcol);
                     }
                 }
                 $x += $w;
             }
             $y += $h;
         }
+
+		if (!$output && !$imagick) {
+			return $png;
+		}
+
         // send headers
         header('Content-Type: image/png');
         header('Cache-Control: public, must-revalidate, max-age=0'); // HTTP/1.1
@@ -317,7 +322,7 @@ class Base2DBarcode
             $imagick = false;
             $png = imagecreate($width, $height);
             $bgcol = imagecolorallocate($png, 255, 255, 255);
-            imagecolortransparent($png, $bgcol);
+            //imagecolortransparent($png, $bgcol);
             $fgcol = imagecolorallocate($png, $color[0], $color[1], $color[2]);
         } elseif (extension_loaded('imagick')) {
             $imagick = true;
